@@ -7,13 +7,13 @@ const USE_CASES = [
   { id: 'any',      label: 'Any',          icon: '✦' },
   { id: 'art',      label: 'Art',          icon: '🎨' },
   { id: 'web',      label: 'Web / UI',     icon: '🖥️' },
-  { id: 'brand',    label: 'Branding',     icon: '◈'  },
-  { id: 'interior', label: 'Interior',     icon: '🏠' },
+  { id: 'brand',    label: 'Branding',     icon: '💎' },
+  { id: 'interior', label: 'Interior',     icon: '🛋️' },
   { id: 'fashion',  label: 'Fashion',      icon: '👗' },
   { id: 'print',    label: 'Print',        icon: '🖨️' },
   { id: 'game',     label: 'Game',         icon: '🎮' },
   { id: 'nature',   label: 'Nature',       icon: '🌿' },
-  { id: 'food',     label: 'Food & Drink', icon: '🍽️' },
+  { id: 'architecture', label: 'Architecture', icon: '🏛️' },
 ]
 
 function randomKeywords() {

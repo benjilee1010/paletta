@@ -373,12 +373,12 @@
 }
 
 .btn-generate--random {
-  background: linear-gradient(135deg, #6a9e6a 0%, #8bbf8b 100%);
-  box-shadow: 0 4px 20px rgba(106, 158, 106, 0.25);
+  background: linear-gradient(135deg, #7a9e5a 0%, #9bbe72 100%);
+  box-shadow: 0 4px 20px rgba(122, 158, 90, 0.25);
 }
 
 .btn-generate--random:hover {
-  box-shadow: 0 6px 28px rgba(106, 158, 106, 0.35);
+  box-shadow: 0 6px 28px rgba(122, 158, 90, 0.35);
 }
 
 .btn-generate:active {

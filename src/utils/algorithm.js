@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------
 export const KEYWORD_GROUPS = [
   {
-    label: 'Color',
+    label: 'Color Priority',
     keywords: ['red','orange','yellow','green','blue','purple','pink','teal','cyan','lime','indigo','magenta','brown','coral','gold','olive','lavender','peach','turquoise','amber','burgundy','navy','rose','black','white','gray','silver'],
   },
   {
@@ -433,7 +433,7 @@ const USE_CASE_MOD = {
   print:    { s:1.12, l:0.93 },
   game:     { s:1.18, l:1.00 },
   nature:   { s:0.85, l:1.04 },
-  food:     { s:1.02, l:1.00 },
+  architecture: { s:0.82, l:1.02 },
 }
 
 // ---------------------------------------------------------------------------
