@@ -83,7 +83,7 @@ export default function PaletteGenerator() {
           </div>
         )}
 
-        <p className="keyword-hint">Lots of options here — don't overthink it. Choose however many you want. Just pick what <em>feels</em> right.</p>
+        <p className="keyword-hint">Lots of options here — don't overthink it. Choose however many you want. You don't need to pick something from every category. Just pick what <em>feels</em> right.</p>
 
         <div className="keyword-groups">
           {KEYWORD_GROUPS.map((group) => (
