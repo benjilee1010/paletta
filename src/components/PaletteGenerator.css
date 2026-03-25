@@ -5,34 +5,60 @@
   grid-template-columns: 1fr 1fr;
   gap: 28px;
   align-items: start;
+  height: calc(100vh - 220px);
+  min-height: 500px;
 }
 
-/* Right column stacks its children vertically and sticks while left scrolls */
+.keyword-section {
+  height: 100%;
+  overflow-y: auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  overflow-x: hidden;
+  min-width: 0;
+}
+
+/* Right column stacks its children vertically and scrolls independently */
 .right-col {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  position: sticky;
-  top: 24px;
-  max-height: calc(100vh - 48px);
+  height: 100%;
   overflow-y: auto;
-  scrollbar-width: none;
+  overflow-x: hidden;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-elevated) transparent;
 }
 
 .right-col::-webkit-scrollbar {
-  display: none;
+  width: 4px;
+}
+
+.right-col::-webkit-scrollbar-thumb {
+  background: var(--bg-elevated);
+  border-radius: 999px;
 }
 
 @media (max-width: 900px) {
   .generator {
     grid-template-columns: 1fr;
     gap: 16px;
+    height: auto;
+    min-height: unset;
+  }
+
+  .keyword-section {
+    height: auto;
+    overflow-y: visible;
   }
 
   .right-col {
-    position: static;
-    max-height: none;
+    height: auto;
     overflow-y: visible;
+    padding-right: 0;
   }
 }
 
@@ -56,14 +82,6 @@
 }
 
 /* ── Keyword section ────────────────────────────────────────── */
-.keyword-section {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  overflow: hidden;
-  min-width: 0;
-}
 
 .keyword-header {
   display: flex;
