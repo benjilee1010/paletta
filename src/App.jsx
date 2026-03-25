@@ -18,7 +18,7 @@ function App() {
         <PaletteGenerator />
       </main>
       <footer>
-        <p>Created by Hoyeon Lee</p>
+        <p>Paletta v1.0.0 by Hoyeon Lee</p>
       </footer>
     </div>
   )
