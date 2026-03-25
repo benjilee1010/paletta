@@ -11,7 +11,7 @@ const USE_CASES = [
   { id: 'interior', label: 'Interior',     icon: '🛋️' },
   { id: 'fashion',  label: 'Fashion',      icon: '👗' },
   { id: 'print',    label: 'Print',        icon: '🖨️' },
-  { id: 'game',     label: 'Game',         icon: '🎮' },
+  { id: 'game',     label: 'Game',         icon: '👾' },
   { id: 'nature',   label: 'Nature',       icon: '🌿' },
   { id: 'architecture', label: 'Architecture', icon: '🏛️' },
 ]
@@ -31,6 +31,10 @@ export default function PaletteGenerator() {
   const [copyAllDone, setCopyAllDone] = useState(false)
 
   const contradicted = getContradictedKeywords(selected)
+
+  const colorPriorityKeywords = KEYWORD_GROUPS.find((g) => g.label === 'Color Priority')?.keywords ?? []
+  const selectedColorCount = selected.filter((k) => colorPriorityKeywords.includes(k)).length
+  const colorLimitReached = selectedColorCount >= 2
   const [openGroups, setOpenGroups] = useState(
     () => Object.fromEntries(KEYWORD_GROUPS.map((g) => [g.label, false]))
   )
@@ -42,6 +46,8 @@ export default function PaletteGenerator() {
 
   const toggleKeyword = (kw) => {
     if (contradicted.has(kw)) return
+    const isColorPriority = colorPriorityKeywords.includes(kw)
+    if (isColorPriority && colorLimitReached && !selected.includes(kw)) return
     setSelected((prev) =>
       prev.includes(kw) ? prev.filter((k) => k !== kw) : [...prev, kw]
     )
@@ -106,9 +112,9 @@ export default function PaletteGenerator() {
                   {group.keywords.map((kw) => (
                     <button
                       key={kw}
-                      className={`kw-tag ${selected.includes(kw) ? 'active' : ''} ${contradicted.has(kw) ? 'contradicted' : ''}`}
+                      className={`kw-tag ${selected.includes(kw) ? 'active' : ''} ${contradicted.has(kw) ? 'contradicted' : ''} ${colorLimitReached && colorPriorityKeywords.includes(kw) && !selected.includes(kw) ? 'color-locked' : ''}`}
                       onClick={() => toggleKeyword(kw)}
-                      title={contradicted.has(kw) ? `Conflicts with: ${[...getContradictedKeywords([kw])].filter(k => selected.includes(k)).join(', ')}` : undefined}
+                      title={contradicted.has(kw) ? `Conflicts with: ${[...getContradictedKeywords([kw])].filter(k => selected.includes(k)).join(', ')}` : colorLimitReached && colorPriorityKeywords.includes(kw) && !selected.includes(kw) ? 'Maximum 2 colors selected' : undefined}
                     >
                       {kw}
                     </button>
@@ -168,7 +174,7 @@ export default function PaletteGenerator() {
         </div>
 
         {/* Generate button */}
-        <button className={`btn-generate ${selected.length === 0 ? 'btn-generate--random' : ''}`} onClick={handleGenerate}>
+        <button className="btn-generate" onClick={handleGenerate}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
           </svg>
