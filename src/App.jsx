@@ -18,7 +18,7 @@ function App() {
         <PaletteGenerator />
       </main>
       <footer>
-        <p>Powered by color theory · Created by Hoyeon Lee</p>
+        <p>Created by Hoyeon Lee</p>
       </footer>
     </div>
   )
