@@ -28,7 +28,7 @@ export const KEYWORD_GROUPS = [
   },
   {
     label: 'Color Quality',
-    keywords: ['creamy','vivid','desaturated','washed out','dusty','rich','faded','deep','pale','matte','glossy','translucent','cloudy','crisp'],
+    keywords: ['creamy','vivid','desaturated','washed out','dusty','rich','faded','deep','pale','matte','glossy','translucent','cloudy','crisp','monochrome','duotone','high contrast','chalky','inky','muddy','weathered'],
   },
   {
     label: 'Era',
@@ -154,6 +154,13 @@ const KEYWORD_DNA = {
   translucent:  { hues:[[0,360]],                 sat:[4,20],   lit:[80,97],  harmony:'analogous'     },
   cloudy:       { hues:[[185,240]],               sat:[4,18],   lit:[68,88],  harmony:'analogous'     },
   crisp:        { hues:[[0,360]],                 sat:[50,90],  lit:[20,80],  harmony:'complementary' },
+  monochrome:   { hues:[[0,360]],                 sat:[5,90],   lit:[5,95],   harmony:'monochrome'    },
+  duotone:      { hues:[[0,360]],                 sat:[55,100], lit:[15,85],  harmony:'complementary' },
+  'high contrast':{ hues:[[0,360]],              sat:[45,100], lit:[5,92],   harmony:'complementary' },
+  chalky:       { hues:[[0,360]],                 sat:[8,32],   lit:[68,90],  harmony:'analogous'     },
+  inky:         { hues:[[0,360]],                 sat:[55,100], lit:[4,28],   harmony:'analogous'     },
+  muddy:        { hues:[[15,75]],                 sat:[12,42],  lit:[22,52],  harmony:'analogous'     },
+  weathered:    { hues:[[15,65],[90,150]],        sat:[10,38],  lit:[35,65],  harmony:'analogous'     },
 
   // ── Era ──────────────────────────────────────────────────────────────────
   '70s':      { hues:[[20,60],[90,130]],          sat:[40,78],  lit:[38,65],  harmony:'analogous'     },
@@ -311,7 +318,8 @@ function mergeDNA(selectedKeywords) {
     if (unique.includes('varied'))            harmony = 'varied'
     else if (unique.includes('triadic'))      harmony = 'triadic'
     else if (unique.includes('complementary'))harmony = 'complementary'
-    else harmony = 'analogous'
+    else if (unique.includes('analogous'))    harmony = 'analogous'
+    else harmony = 'monochrome'
   }
 
   return { hues:allHues, sat:avgRange('sat'), lit:avgRange('lit'), harmony }
@@ -344,7 +352,13 @@ function generateHues(count, harmony, hueRanges) {
   const root = pickHueFromRanges(hueRanges)
   const hues = [root]
 
-  if (harmony === 'analogous') {
+  if (harmony === 'monochrome') {
+    // All hues stay within ±8° of root — true single-hue palette
+    for (let i = 1; i < count; i++) {
+      const offset = rand(-8, 8)
+      hues.push(((root + offset) + 360) % 360)
+    }
+  } else if (harmony === 'analogous') {
     for (let i = 1; i < count; i++) {
       const sign = i % 2 === 0 ? 1 : -1
       const step = Math.ceil(i / 2) * rand(15, 32)
@@ -489,6 +503,16 @@ const CONTRADICTION_PAIRS = [
   // Time of day opposites
   ['midnight',   'golden hour'],['midnight',  'midday'],
   ['midday',     'dusk'],       ['dawn',      'dusk'],
+
+  // New quality keyword conflicts
+  ['monochrome',    'duotone'],    ['monochrome',    'varied'],
+  ['monochrome',    'funky'],      ['monochrome',    'maximalist'],
+  ['high contrast', 'muted'],      ['high contrast', 'soft'],
+  ['high contrast', 'low contrast'],
+  ['inky',          'pale'],       ['inky',          'chalky'],
+  ['inky',          'washed out'], ['inky',          'creamy'],
+  ['chalky',        'inky'],       ['chalky',        'vivid'],
+  ['chalky',        'rich'],       ['chalky',        'neon'],
 
   // Neutral color opposites
   ['black',  'white'],      ['black',  'pale'],       ['black',  'bright'],

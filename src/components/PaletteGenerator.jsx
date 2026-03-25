@@ -31,6 +31,14 @@ export default function PaletteGenerator() {
   const [copyAllDone, setCopyAllDone] = useState(false)
 
   const contradicted = getContradictedKeywords(selected)
+  const [openGroups, setOpenGroups] = useState(
+    () => Object.fromEntries(KEYWORD_GROUPS.map((g) => [g.label, false]))
+  )
+  const toggleGroup = (label) =>
+    setOpenGroups((prev) => ({ ...prev, [label]: !prev[label] }))
+  const allOpen = Object.values(openGroups).every(Boolean)
+  const toggleAll = () =>
+    setOpenGroups(Object.fromEntries(KEYWORD_GROUPS.map((g) => [g.label, !allOpen])))
 
   const toggleKeyword = (kw) => {
     if (contradicted.has(kw)) return
@@ -69,6 +77,7 @@ export default function PaletteGenerator() {
             {selected.length > 0 && (
               <button className="btn-ghost" onClick={() => setSelected([])}>Clear all</button>
             )}
+            <button className="btn-ghost" onClick={toggleAll}>{allOpen ? 'Collapse all' : 'Expand all'}</button>
             <button className="btn-ghost" onClick={handleRandom}>Randomize</button>
           </div>
         </div>
@@ -88,18 +97,23 @@ export default function PaletteGenerator() {
         <div className="keyword-groups">
           {KEYWORD_GROUPS.map((group) => (
             <div key={group.label} className="keyword-group">
-              <span className="group-label">{group.label}</span>
-              <div className="keyword-tags">
-                {group.keywords.map((kw) => (
-                  <button
-                    key={kw}
-                    className={`kw-tag ${selected.includes(kw) ? 'active' : ''} ${contradicted.has(kw) ? 'contradicted' : ''}`}
-                    onClick={() => toggleKeyword(kw)}
-                    title={contradicted.has(kw) ? `Conflicts with: ${[...getContradictedKeywords([kw])].filter(k => selected.includes(k)).join(', ')}` : undefined}
-                  >
-                    {kw}
-                  </button>
-                ))}
+              <button className="group-label" onClick={() => toggleGroup(group.label)}>
+                <span>{group.label}</span>
+                <span className="group-chevron">{openGroups[group.label] ? '▴' : '▾'}</span>
+              </button>
+              <div className={`keyword-tags-wrapper ${openGroups[group.label] ? 'open' : ''}`}>
+                <div className="keyword-tags">
+                  {group.keywords.map((kw) => (
+                    <button
+                      key={kw}
+                      className={`kw-tag ${selected.includes(kw) ? 'active' : ''} ${contradicted.has(kw) ? 'contradicted' : ''}`}
+                      onClick={() => toggleKeyword(kw)}
+                      title={contradicted.has(kw) ? `Conflicts with: ${[...getContradictedKeywords([kw])].filter(k => selected.includes(k)).join(', ')}` : undefined}
+                    >
+                      {kw}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
